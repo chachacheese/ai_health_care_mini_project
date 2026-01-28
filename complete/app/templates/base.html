@@ -6,7 +6,7 @@
     <title>{% block title %}개인 건강관리{% endblock %}</title>
     <link rel="stylesheet" href="/static/css/styles.css" />
   </head>
-  <body>
+  <body class="{{ body_class|default('') }}">
     <header class="topbar">
       <div class="brand">
         <span class="logo">HD</span>

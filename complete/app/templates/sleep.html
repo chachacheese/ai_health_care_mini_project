@@ -1,10 +1,21 @@
 {% extends "base.html" %}
+{% set body_class = "page-sleep" %}
 {% block title %}수면 | 건강관리{% endblock %}
 {% block content %}
 <section class="page-header">
   <div>
     <h1>수면 기록</h1>
     <p class="muted">취침/기상 시간을 기록하세요.</p>
+  </div>
+  <div class="illustration sleep">
+    <svg viewBox="0 0 160 120" aria-hidden="true">
+      <path
+        d="M96 22a34 34 0 1 0 0 68 36 36 0 0 1-28-58 34 34 0 0 0 28-10z"
+        fill="#8c95ff"
+      />
+      <circle cx="120" cy="32" r="4" fill="rgba(255,255,255,0.6)" />
+      <circle cx="134" cy="44" r="3" fill="rgba(255,255,255,0.5)" />
+    </svg>
   </div>
   <form class="form" method="post">
     <label>
@@ -34,9 +45,23 @@
   </div>
   <ul class="list">
     {% for log in logs %}
-    <li>
-      <span>{{ log.sleep_date }} · {{ log.start_time.strftime("%H:%M") }} ~ {{ log.end_time.strftime("%H:%M") }}</span>
-      <strong>품질 {{ log.quality or "-" }}</strong>
+    <li class="list-row">
+      <div class="item-main">
+        <span>{{ log.sleep_date }} · {{ log.start_time.strftime("%H:%M") }} ~ {{ log.end_time.strftime("%H:%M") }}</span>
+        <strong>품질 {{ log.quality or "-" }}</strong>
+      </div>
+      <div class="item-actions">
+        <form class="inline-form" method="post" action="/sleep/{{ log.id }}/edit">
+          <input class="input-compact" type="date" name="sleep_date" value="{{ log.sleep_date.strftime('%Y-%m-%d') }}" required />
+          <input class="input-compact" type="datetime-local" name="start_time" value="{{ log.start_time.strftime('%Y-%m-%dT%H:%M') }}" required />
+          <input class="input-compact" type="datetime-local" name="end_time" value="{{ log.end_time.strftime('%Y-%m-%dT%H:%M') }}" required />
+          <input class="input-compact" type="number" name="quality" min="1" max="5" value="{{ log.quality or '' }}" />
+          <button class="button-secondary" type="submit">수정</button>
+        </form>
+        <form method="post" action="/sleep/{{ log.id }}/delete">
+          <button class="button-danger" type="submit">삭제</button>
+        </form>
+      </div>
     </li>
     {% else %}
     <li class="muted">아직 기록이 없습니다.</li>

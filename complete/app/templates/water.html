@@ -1,10 +1,26 @@
 {% extends "base.html" %}
+{% set body_class = "page-water" %}
 {% block title %}수분 | 건강관리{% endblock %}
 {% block content %}
 <section class="page-header">
   <div>
     <h1>수분 기록</h1>
     <p class="muted">하루 섭취량을 손쉽게 기록하세요.</p>
+  </div>
+  <div class="illustration water">
+    <svg viewBox="0 0 140 140" aria-hidden="true">
+      <defs>
+        <linearGradient id="drop" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#57f2c3" />
+          <stop offset="1" stop-color="#6e7bff" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M70 18c16 22 32 40 32 60a32 32 0 1 1-64 0c0-20 16-38 32-60z"
+        fill="url(#drop)"
+      />
+      <circle cx="52" cy="82" r="8" fill="rgba(255,255,255,0.4)" />
+    </svg>
   </div>
   <form class="form" method="post">
     <label>
@@ -22,9 +38,21 @@
   </div>
   <ul class="list">
     {% for log in logs %}
-    <li>
-      <span>{{ log.logged_at.strftime("%Y-%m-%d %H:%M") }}</span>
-      <strong>{{ log.amount_ml }} ml</strong>
+    <li class="list-row">
+      <div class="item-main">
+        <span>{{ log.logged_at.strftime("%Y-%m-%d %H:%M") }}</span>
+        <strong>{{ log.amount_ml }} ml</strong>
+      </div>
+      <div class="item-actions">
+        <form class="inline-form" method="post" action="/water/{{ log.id }}/edit">
+          <input class="input-compact" type="number" name="amount_ml" min="50" value="{{ log.amount_ml }}" required />
+          <input class="input-compact" type="datetime-local" name="logged_at" value="{{ log.logged_at.strftime('%Y-%m-%dT%H:%M') }}" required />
+          <button class="button-secondary" type="submit">수정</button>
+        </form>
+        <form method="post" action="/water/{{ log.id }}/delete">
+          <button class="button-danger" type="submit">삭제</button>
+        </form>
+      </div>
     </li>
     {% else %}
     <li class="muted">아직 기록이 없습니다.</li>

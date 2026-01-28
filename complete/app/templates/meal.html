@@ -1,10 +1,18 @@
 {% extends "base.html" %}
+{% set body_class = "page-meal" %}
 {% block title %}식사 | 건강관리{% endblock %}
 {% block content %}
 <section class="page-header">
   <div>
     <h1>식사 기록</h1>
     <p class="muted">식단과 칼로리를 기록하세요.</p>
+  </div>
+  <div class="illustration meal">
+    <svg viewBox="0 0 160 120" aria-hidden="true">
+      <rect x="32" y="34" width="96" height="50" rx="18" fill="#ffc65c" />
+      <rect x="42" y="44" width="76" height="8" rx="4" fill="rgba(0,0,0,0.15)" />
+      <circle cx="52" cy="24" r="6" fill="rgba(255,255,255,0.6)" />
+    </svg>
   </div>
   <form class="form" method="post">
     <label>
@@ -35,9 +43,28 @@
   </div>
   <ul class="list">
     {% for log in logs %}
-    <li>
-      <span>{{ log.meal_type }} · {{ log.eaten_at.strftime("%m/%d %H:%M") }}</span>
-      <strong>{{ log.calories or "-" }} kcal</strong>
+    <li class="list-row">
+      <div class="item-main">
+        <span>{{ log.meal_type }} · {{ log.eaten_at.strftime("%m/%d %H:%M") }}</span>
+        <strong>{{ log.calories or "-" }} kcal</strong>
+      </div>
+      <div class="item-actions">
+        <form class="inline-form" method="post" action="/meal/{{ log.id }}/edit">
+          <select class="input-compact" name="meal_type" required>
+            <option value="아침" {% if log.meal_type == "아침" %}selected{% endif %}>아침</option>
+            <option value="점심" {% if log.meal_type == "점심" %}selected{% endif %}>점심</option>
+            <option value="저녁" {% if log.meal_type == "저녁" %}selected{% endif %}>저녁</option>
+            <option value="간식" {% if log.meal_type == "간식" %}selected{% endif %}>간식</option>
+          </select>
+          <input class="input-compact" type="number" name="calories" min="0" value="{{ log.calories or '' }}" />
+          <input class="input-compact" type="text" name="note" value="{{ log.note or '' }}" />
+          <input class="input-compact" type="datetime-local" name="eaten_at" value="{{ log.eaten_at.strftime('%Y-%m-%dT%H:%M') }}" required />
+          <button class="button-secondary" type="submit">수정</button>
+        </form>
+        <form method="post" action="/meal/{{ log.id }}/delete">
+          <button class="button-danger" type="submit">삭제</button>
+        </form>
+      </div>
     </li>
     {% else %}
     <li class="muted">아직 기록이 없습니다.</li>

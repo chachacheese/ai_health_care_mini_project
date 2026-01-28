@@ -15,9 +15,15 @@ from app.services.mock_data import (
     add_exercise,
     add_meal,
     add_sleep,
+    delete_exercise,
+    delete_meal,
+    delete_sleep,
     list_exercise,
     list_meal,
     list_sleep,
+    update_exercise,
+    update_meal,
+    update_sleep,
 )
 from app.services.users import get_or_create_default_user
 
@@ -84,6 +90,28 @@ async def add_water(amount_ml: int = Form(...)):
     return RedirectResponse(url="/water", status_code=303)
 
 
+@router.post("/water/{log_id}/edit")
+async def edit_water(
+    log_id: int, amount_ml: int = Form(...), logged_at: str = Form(...)
+):
+    user = await get_or_create_default_user()
+    log = await WaterLog.get_or_none(id=log_id, user=user)
+    if log:
+        log.amount_ml = amount_ml
+        log.logged_at = datetime.fromisoformat(logged_at)
+        await log.save(update_fields=["amount_ml", "logged_at"])
+    return RedirectResponse(url="/water", status_code=303)
+
+
+@router.post("/water/{log_id}/delete")
+async def delete_water(log_id: int):
+    user = await get_or_create_default_user()
+    log = await WaterLog.get_or_none(id=log_id, user=user)
+    if log:
+        await log.delete()
+    return RedirectResponse(url="/water", status_code=303)
+
+
 @router.get("/exercise")
 async def exercise_page(request: Request):
     user = await get_or_create_default_user()
@@ -100,6 +128,28 @@ async def add_exercise_log(
 ):
     # TODO: ORM 모델과 테이블로 교체하세요.
     add_exercise(activity, duration_min, calories_burned)
+    return RedirectResponse(url="/exercise", status_code=303)
+
+
+@router.post("/exercise/{log_id}/edit")
+async def edit_exercise_log(
+    log_id: int,
+    activity: str = Form(...),
+    duration_min: int = Form(...),
+    calories_burned: int | None = Form(None),
+    logged_at: str = Form(...),
+):
+    # TODO: ORM 모델과 테이블로 교체하세요.
+    update_exercise(
+        log_id, activity, duration_min, calories_burned, datetime.fromisoformat(logged_at)
+    )
+    return RedirectResponse(url="/exercise", status_code=303)
+
+
+@router.post("/exercise/{log_id}/delete")
+async def delete_exercise_log(log_id: int):
+    # TODO: ORM 모델과 테이블로 교체하세요.
+    delete_exercise(log_id)
     return RedirectResponse(url="/exercise", status_code=303)
 
 
@@ -128,6 +178,32 @@ async def add_sleep_log(
     return RedirectResponse(url="/sleep", status_code=303)
 
 
+@router.post("/sleep/{log_id}/edit")
+async def edit_sleep_log(
+    log_id: int,
+    sleep_date: str = Form(...),
+    start_time: str = Form(...),
+    end_time: str = Form(...),
+    quality: int | None = Form(None),
+):
+    # TODO: ORM 모델과 테이블로 교체하세요.
+    update_sleep(
+        log_id=log_id,
+        sleep_date=date.fromisoformat(sleep_date),
+        start_time=datetime.fromisoformat(start_time),
+        end_time=datetime.fromisoformat(end_time),
+        quality=quality,
+    )
+    return RedirectResponse(url="/sleep", status_code=303)
+
+
+@router.post("/sleep/{log_id}/delete")
+async def delete_sleep_log(log_id: int):
+    # TODO: ORM 모델과 테이블로 교체하세요.
+    delete_sleep(log_id)
+    return RedirectResponse(url="/sleep", status_code=303)
+
+
 @router.get("/meal")
 async def meal_page(request: Request):
     user = await get_or_create_default_user()
@@ -144,6 +220,26 @@ async def add_meal_log(
 ):
     # TODO: ORM 모델과 테이블로 교체하세요.
     add_meal(meal_type, calories, note)
+    return RedirectResponse(url="/meal", status_code=303)
+
+
+@router.post("/meal/{log_id}/edit")
+async def edit_meal_log(
+    log_id: int,
+    meal_type: str = Form(...),
+    calories: int | None = Form(None),
+    note: str | None = Form(None),
+    eaten_at: str = Form(...),
+):
+    # TODO: ORM 모델과 테이블로 교체하세요.
+    update_meal(log_id, meal_type, calories, note, datetime.fromisoformat(eaten_at))
+    return RedirectResponse(url="/meal", status_code=303)
+
+
+@router.post("/meal/{log_id}/delete")
+async def delete_meal_log(log_id: int):
+    # TODO: ORM 모델과 테이블로 교체하세요.
+    delete_meal(log_id)
     return RedirectResponse(url="/meal", status_code=303)
 
 

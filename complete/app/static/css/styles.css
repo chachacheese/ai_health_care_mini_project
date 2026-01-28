@@ -12,6 +12,59 @@ body {
   min-height: 100vh;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.topbar,
+.container,
+.footer {
+  position: relative;
+  z-index: 1;
+}
+
+body.page-water::before {
+  opacity: 0.7;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(87, 242, 195, 0.18), transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(110, 123, 255, 0.2), transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(87, 242, 195, 0.16), transparent 50%);
+  animation: waterWave 10s ease-in-out infinite;
+}
+
+body.page-exercise::before {
+  opacity: 0.7;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 149, 92, 0.22), transparent 45%),
+    radial-gradient(circle at 80% 40%, rgba(255, 99, 99, 0.2), transparent 55%),
+    radial-gradient(circle at 30% 85%, rgba(110, 123, 255, 0.18), transparent 50%);
+  animation: exercisePulse 8s ease-in-out infinite;
+}
+
+body.page-sleep::before {
+  opacity: 0.8;
+  background:
+    radial-gradient(circle at 25% 25%, rgba(140, 149, 255, 0.25), transparent 50%),
+    radial-gradient(circle at 75% 20%, rgba(87, 124, 242, 0.2), transparent 55%),
+    radial-gradient(circle at 50% 85%, rgba(80, 90, 160, 0.35), transparent 60%);
+  animation: sleepGlow 12s ease-in-out infinite;
+}
+
+body.page-meal::before {
+  opacity: 0.7;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 198, 92, 0.2), transparent 45%),
+    radial-gradient(circle at 80% 25%, rgba(255, 149, 92, 0.22), transparent 55%),
+    radial-gradient(circle at 45% 85%, rgba(110, 123, 255, 0.15), transparent 55%);
+  animation: mealSpark 9s ease-in-out infinite;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -45,6 +98,7 @@ a {
   place-items: center;
   font-weight: 700;
   color: #0b0f14;
+  animation: float 3.2s ease-in-out infinite;
 }
 
 .brand-title {
@@ -67,11 +121,32 @@ a {
 .nav a {
   padding: 8px 12px;
   border-radius: 8px;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
+  position: relative;
 }
 
 .nav a:hover {
   background: rgba(255, 255, 255, 0.08);
+  color: #e9ecff;
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6e7bff, #57f2c3);
+  opacity: 0;
+  transform: scaleX(0.6);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.nav a:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .chip {
@@ -103,6 +178,7 @@ a {
   padding: 16px 20px;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.06);
+  animation: float 4.2s ease-in-out infinite;
 }
 
 .hero-metric span {
@@ -128,6 +204,12 @@ a {
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
 }
 
 .card-header {
@@ -161,6 +243,57 @@ a {
   padding: 10px 12px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.03);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.list li:hover {
+  transform: translateX(4px);
+  background: rgba(110, 123, 255, 0.12);
+}
+
+.list-row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.item-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.inline-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.input-compact {
+  min-width: 120px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.button-secondary {
+  background: rgba(110, 123, 255, 0.2);
+  color: #d7dbff;
+  border: 1px solid rgba(110, 123, 255, 0.35);
+}
+
+.button-danger {
+  background: rgba(255, 99, 99, 0.18);
+  color: #ffd1d1;
+  border: 1px solid rgba(255, 99, 99, 0.35);
 }
 
 .list-item {
@@ -184,6 +317,39 @@ a {
   justify-content: space-between;
   gap: 24px;
   margin-bottom: 24px;
+}
+
+.illustration {
+  width: 140px;
+  height: 140px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.05);
+  animation: float 4.8s ease-in-out infinite;
+}
+
+.illustration svg {
+  width: 88%;
+  height: 88%;
+}
+
+.illustration.water {
+  animation: waterWave 7.5s ease-in-out infinite;
+}
+
+.illustration.exercise {
+  animation: exercisePulse 6s ease-in-out infinite;
+}
+
+.illustration.sleep {
+  animation: sleepGlow 9s ease-in-out infinite;
+}
+
+.illustration.meal {
+  animation: mealSpark 7s ease-in-out infinite;
 }
 
 .form {
@@ -221,10 +387,67 @@ button {
   color: #0a0e13;
   font-weight: 600;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 button:hover {
   filter: brightness(1.05);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(87, 242, 195, 0.15);
+}
+
+button:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes waterWave {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes exercisePulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes sleepGlow {
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(8px) scale(1.02);
+  }
+}
+
+@keyframes mealSpark {
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(12px);
+  }
 }
 
 .chart-wrap {

@@ -21,7 +21,7 @@ ORM 모델 정의, DB 연결, CRUD 작성 등 백엔드의 핵심 흐름을 직�
 
 ## 🧱 구현된 주요 기능
 ### ✔ 데이터베이스 & ORM  
-- Tortoise ORM 기반 User, Exercise, Meal, Sleep, Water 모델 정의  
+- Tortoise ORM 기반 Exercise, Meal, Sleep 모델 정의  
 - SQLite 연결 
 - 비동기 환경에서 ORM 조작 테스트
 

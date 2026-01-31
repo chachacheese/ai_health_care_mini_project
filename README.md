@@ -29,7 +29,7 @@ ORM 모델 정의, DB 연결, CRUD 작성 등 백엔드의 핵심 흐름을 직�
 - `/pages/*` : 템플릿/HTML 반환용 라우트 일부 구현  
 
 ### ✔ CRUD 구현  
-- Water / Exercise / Meal / Sleep CRUD 
+- Exercise / Meal / Sleep CRUD 
 
 ---
 ```
@@ -41,8 +41,7 @@ app/
  │    ├── exercise.py
  │    ├── meal.py
  │    ├── sleep.py
- │    ├── user.py
- │    └── water.py
+ │    └── water.py            #강사님이 참고하라고 알려주신 파일
  └── 🌐 routers/        
       └── pages.py         # 대시보드 일부,HTML 반환 라우트 일부 구현
 ```
